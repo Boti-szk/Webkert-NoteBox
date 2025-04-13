@@ -1,0 +1,15 @@
+<div class="container">
+  <mat-card class="home-wrapper">
+    <h1>Üdvözöljük a NoteBox weboldalán!</h1>
+    <img src="logo_dark.png" style="border-radius: 70px;">
+    
+    @if (!isLoggedIn) {
+      <button mat-stroked-button [routerLink]="['/login']" class="tasks">Bejelentkezés</button>
+    }
+    
+    @if (isLoggedIn) {
+      <button mat-stroked-button class="notes" (click)="changePage()">Jegyzeteim</button>
+      <button mat-stroked-button [routerLink]="['/profile']" class="tasks">Profilom</button>
+    }
+  </mat-card>
+</div>

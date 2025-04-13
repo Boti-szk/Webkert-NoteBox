@@ -1,0 +1,74 @@
+<div class="notes-page">
+  <mat-card class="notes-wrapper">
+    <mat-card-header>
+      <mat-card-title class="notes-title">Jegyzeteim</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Keresés</mat-label>
+          <input matInput placeholder="Keresés név alapján" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Típus</mat-label>
+          <mat-select [(ngModel)]="selectedType" (selectionChange)="onTypeChange()">
+            <mat-option value="Összes">Összes</mat-option>
+            <mat-option value="Jegyzet">Jegyzet</mat-option>
+            <mat-option value="Teendő">Teendő</mat-option>
+            <mat-option value="Feladat">Feladat</mat-option>
+            <mat-option value="Egyéb">Egyéb</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="notes-create" (click)="changePage()">
+          Új jegyzet létrehozása
+        </button>
+      </div>
+
+      <!-- Jegyzetek megjelenítése rácsban -->
+      <div class="notes-grid">
+        <mat-card *ngFor="let note of filteredNotes; let i = index" class="note-card">
+          
+          <!-- Cím -->
+          <h2 class="note-title" [class.completed]="note.completed">
+            {{ note.title }}
+          </h2>
+
+          <!-- Dátum és típus egy sorban -->
+          <div class="meta-line">
+            {{ note.createdAt | date:'yyyy.MM.dd' }} | {{ note.type }}
+          </div>
+
+          <!-- Leírás snippet egy címkével -->
+          <div class="note-text" [class.completed]="note.completed">
+            <strong>Leírás:</strong>
+          <br>
+          {{ note.text | shorterText:100 }}
+          </div>
+
+          <!-- Bepipálás: azonnal áthúzza a jegyzetet -->
+          <mat-checkbox
+            class="note-checkbox"
+            color="primary"
+            [checked]="note.completed"
+            (change)="toggleNoteCompletion(note)">
+            Kész
+          </mat-checkbox>
+
+          <!-- Gombok: Módosítás, Törlés -->
+          <div class="note-actions">
+            <button mat-stroked-button (click)="modifyNote(note)">
+              <mat-icon>create</mat-icon>
+              Módosítás
+            </button>
+            <button mat-raised-button (click)="deleteNote(i)">
+              <mat-icon>delete</mat-icon>Törlés
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

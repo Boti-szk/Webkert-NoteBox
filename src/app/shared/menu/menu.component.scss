@@ -1,0 +1,22 @@
+
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    border-radius: 0 !important;
+}
+
+.mdc-list-item:focus::before {
+    opacity: 0 !important;
+}
+
+.active-list-item {
+    background-color: #ff5622af;
+    color: black;
+    font-weight: bold;
+}
+
+mat-nav-list {
+    margin-top: 56px;
+    min-width: 200px;
+}

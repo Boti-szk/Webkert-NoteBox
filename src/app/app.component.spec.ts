@@ -1,3 +1,4 @@
+//fő komponens teszt
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
@@ -14,16 +15,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Note_Create_Website' title`, () => {
+  it(`should have the 'NoteBox' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Note_Create_Website');
+    expect(app.title).toEqual('NoteBox');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Note_Create_Website');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, NoteBox');
   });
 });
