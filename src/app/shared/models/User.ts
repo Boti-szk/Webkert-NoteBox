@@ -2,12 +2,11 @@
 import { Note } from "./Note";
 
 export interface User {
+  id: string
     name: {
       firstname: string;
       lastname: string;
     };
     email: string;
-    password: string;
-    notes: Note[];
-  completed_notes: Note[];
+    notes: string[];
 }

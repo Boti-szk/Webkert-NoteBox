@@ -1,54 +1,66 @@
-
 <div class="note-create-container">
-    <mat-card class="note-create-card">
-      <mat-card-header>
-        <mat-card-title class="notes-title">Új Jegyzet Létrehozása</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <form [formGroup]="noteForm" (ngSubmit)="createNote()" class="note-create-form">
-          
-          <mat-form-field appearance="outline">
-            <mat-label>Cím</mat-label>
-            <input matInput formControlName="title" placeholder="Adja meg a jegyzet címét">
-            <mat-error *ngIf="noteForm.get('title')?.hasError('required')">
-              A cím megadása kötelező!
-            </mat-error>
-            <mat-error *ngIf="noteForm.get('title')?.hasError('minlength')">
-              Legalább 3 karakter szükséges!
-            </mat-error>
-          </mat-form-field>
-  
-          <mat-form-field appearance="outline">
-            <mat-label>Leírás</mat-label>
-            <textarea matInput formControlName="text" rows="4" placeholder="Adja meg a jegyzet leírását"></textarea>
-            <mat-error *ngIf="noteForm.get('text')?.hasError('required')">
-              A leírás megadása kötelező!
-            </mat-error>
-            <mat-error *ngIf="noteForm.get('text')?.hasError('minlength')">
-              Legalább 10 karakter szükséges!
-            </mat-error>
-          </mat-form-field>
-  
-          <mat-form-field appearance="outline">
-            <mat-label>Típus</mat-label>
-            <input matInput formControlName="type" [matAutocomplete]="auto" placeholder="Válasszon típust">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of noteTypes" [value]="option">
-                {{ option }}
-              </mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="noteForm.get('type')?.hasError('required')">
-              Válasszon jegyzet típust!
-            </mat-error>
-          </mat-form-field>
-  
-          <div class="actions">
-            <button mat-flat-button color="primary" type="submit">
-              Létrehozás
-            </button>
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  
+  <mat-card class="note-create-card">
+    <mat-card-header>
+      <mat-card-title class="notes-title">Új Jegyzet Létrehozása</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="noteForm" (ngSubmit)="createNote()" class="note-create-form">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cím</mat-label>
+          <input
+            matInput
+            formControlName="title"
+            placeholder="Adja meg a jegyzet címét"
+          />
+          <mat-error *ngIf="noteForm.get('title')?.hasError('required')">
+            A cím megadása kötelező!
+          </mat-error>
+          <mat-error *ngIf="noteForm.get('title')?.hasError('minlength')">
+            Legalább 3 karakter szükséges!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Leírás</mat-label>
+          <textarea
+            matInput
+            formControlName="content"
+            rows="4"
+            placeholder="Adja meg a jegyzet leírását"
+          ></textarea>
+          <mat-error *ngIf="noteForm.get('content')?.hasError('required')">
+            A leírás megadása kötelező!
+          </mat-error>
+          <mat-error *ngIf="noteForm.get('content')?.hasError('minlength')">
+            Legalább 10 karakter szükséges!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Típus</mat-label>
+          <input
+            matInput
+            formControlName="type"
+            [matAutocomplete]="auto"
+            placeholder="Válasszon típust"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of noteTypes" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="noteForm.get('type')?.hasError('required')">
+            Válasszon jegyzet típust!
+          </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit">
+            Létrehozás
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

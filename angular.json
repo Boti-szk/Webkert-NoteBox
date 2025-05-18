@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Note_Create_Website": {
+    "note-create-website": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Note_Create_Website:build:production"
+              "buildTarget": "note-create-website:build:production"
             },
             "development": {
-              "buildTarget": "Note_Create_Website:build:development"
+              "buildTarget": "note-create-website:build:development"
             }
           },
           "defaultConfiguration": "development"

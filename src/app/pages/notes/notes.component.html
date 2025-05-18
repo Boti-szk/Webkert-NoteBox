@@ -45,7 +45,7 @@
           <div class="note-text" [class.completed]="note.completed">
             <strong>Leírás:</strong>
           <br>
-          {{ note.text | shorterText:100 }}
+          {{ note.content | shorterText:100 }}
           </div>
 
           <!-- Bepipálás: azonnal áthúzza a jegyzetet -->
@@ -59,10 +59,6 @@
 
           <!-- Gombok: Módosítás, Törlés -->
           <div class="note-actions">
-            <button mat-stroked-button (click)="modifyNote(note)">
-              <mat-icon>create</mat-icon>
-              Módosítás
-            </button>
             <button mat-raised-button (click)="deleteNote(i)">
               <mat-icon>delete</mat-icon>Törlés
             </button>

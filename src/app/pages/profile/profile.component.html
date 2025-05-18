@@ -1,77 +1,56 @@
 <div class="profile-container">
-    <mat-card class="profile-card">
-      <mat-card-header>
-        <mat-card-title class="mat-title">Felhasználói profilom</mat-card-title>
-        <mat-form-field appearance="outline">
-          <mat-label>Select Profile</mat-label>
-          <mat-select [value]="selectedIndex" (selectionChange)="reload($event.value)">
-            @for (profile of ProfileObject; track $index) {
-              <mat-option [value]="$index">{{profile.id}}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </mat-card-header>
-  
-      <mat-card-content>
-        <div class="profile-info">
-          <div class="avatar-container">
-            <div class="avatar mat-elevation-z2">
-              {{ProfileObject[selectedIndex].avatar}}
-            </div>
-          </div>
-          <div class="user-details">
-            <h3 class="user-name">{{ProfileObject[selectedIndex].user_name}}</h3>
-            <div class="user-email">
-              <mat-icon>email</mat-icon>
-              <span>{{ProfileObject[selectedIndex].email}}</span>
-            </div>
-          </div>
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>Profilom</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <ng-container *ngIf="isLoading; else content">
+        <div class="loading-container">
+          <p>Profiladatok betöltése...</p>
         </div>
-        
-        <div class="stats-section">
-          <h2>Task Statistics</h2>
-          
-          <div class="stats-cards">
-            <mat-card class="stat-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>assignment</mat-icon>
-                <mat-card-title>{{ProfileObject[selectedIndex].tasks.total}}</mat-card-title>
-                <mat-card-subtitle>Total Tasks</mat-card-subtitle>
-              </mat-card-header>
-            </mat-card>
-            
-            <mat-card class="stat-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>done_all</mat-icon>
-                <mat-card-title>{{ProfileObject[selectedIndex].tasks.completed}}</mat-card-title>
-                <mat-card-subtitle>Completed</mat-card-subtitle>
-              </mat-card-header>
-            </mat-card>
-            
-            <mat-card class="stat-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>pending</mat-icon>
-                <mat-card-title>{{ProfileObject[selectedIndex].tasks.pending}}</mat-card-title>
-                <mat-card-subtitle>Pending</mat-card-subtitle>
-              </mat-card-header>
-            </mat-card>
-          </div>
-          
-          <mat-card class="completion-card">
-            <mat-card-content>
-              <div class="completion-header">
-                <h3>Completion Rate</h3>
-                <div class="completion-value">
-                  {{(ProfileObject[selectedIndex].tasks.completed / ProfileObject[selectedIndex].tasks.total * 100).toFixed(2)}}%
-                </div>
+      </ng-container>
+
+      <ng-template #content>
+        <ng-container *ngIf="user; else noUser">
+          <div class="profile-flex">
+
+            <div class="profile-info-panel">
+              <div class="avatar">{{ getUserInitials() }}</div>
+              <h3 class="user-name">
+                {{ user.name.lastname }} {{ user.name.firstname }}
+              </h3>
+              <div class="user-email">
+                <mat-icon>email</mat-icon>
+                <span>{{ user.email }}</span>
               </div>
-              <mat-progress-bar
-                mode="determinate"
-                [value]="ProfileObject[selectedIndex].tasks.completed / ProfileObject[selectedIndex].tasks.total * 100">
-              </mat-progress-bar>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+            </div>
+
+            <div class="stats-panel">
+              <h4>Jegyzeteim áttekintése</h4>
+              <ul class="stats-list">
+                <li>
+                  <mat-icon>assignment</mat-icon>
+                  <span class="label">Összes:</span>
+                  <span class="value">{{ stats.total }}</span>
+                </li>
+                <li>
+                  <mat-icon>done_all</mat-icon>
+                  <span class="label">Teljesített:</span>
+                  <span class="value">{{ stats.completed }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #noUser>
+          <div class="empty-state">
+            <mat-icon>person_off</mat-icon>
+            <p>Nincs elérhető profil. Kérjük, jelentkezz be.</p>
+          </div>
+        </ng-template>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

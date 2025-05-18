@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,8 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
+
+import { Note } from '../../shared/models/Note';
+import { NoteService } from '../../shared/services/note.service';
 
 export type NoteType = 'Jegyzet' | 'Teendő' | 'Feladat' | 'Egyéb';
 
@@ -21,7 +23,6 @@ export type NoteType = 'Jegyzet' | 'Teendő' | 'Feladat' | 'Egyéb';
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatSelectModule,
     MatCardModule
   ],
   templateUrl: './note-create.component.html',
@@ -29,13 +30,15 @@ export type NoteType = 'Jegyzet' | 'Teendő' | 'Feladat' | 'Egyéb';
 })
 export class NoteCreateComponent implements OnInit {
   noteForm: FormGroup;
-
   noteTypes: NoteType[] = ['Jegyzet', 'Teendő', 'Feladat', 'Egyéb'];
 
-  constructor() {
+  constructor(
+    private noteService: NoteService,
+    private router: Router
+  ) {
     this.noteForm = new FormGroup({
       title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      text: new FormControl('', [Validators.required, Validators.minLength(10)]),
+      content: new FormControl('', [Validators.required, Validators.minLength(10)]),
       type: new FormControl('Jegyzet', [Validators.required])
     });
   }
@@ -48,8 +51,18 @@ export class NoteCreateComponent implements OnInit {
       return;
     }
 
-    console.log("Új jegyzet:", this.noteForm.value);
+    const formValue = this.noteForm.value;
 
-    this.noteForm.reset({ type: 'Jegyzet' });
+    const newNote: Omit<Note, 'id'> = {
+      title: formValue.title,
+      content: formValue.content,
+      type: formValue.type,
+      completed: false,
+      createdAt: new Date().toISOString()
+    };
+
+    this.noteService.addNote(newNote)
+      .then(() => this.router.navigate(['/notes']))
+      .catch(err => console.error('Hiba jegyzet mentésekor:', err));
   }
 }

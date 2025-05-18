@@ -1,13 +1,12 @@
-//beimportálja és megjeleníti a kiválasztott felhasználó adatait
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileObject } from '../../shared/constant';
-
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Subscription } from 'rxjs';
+import { UserService } from '../../shared/services/user.service';
+import { User } from '../../shared/models/User';
+import { Note } from '../../shared/models/Note';
 
 @Component({
   selector: 'app-profile',
@@ -16,23 +15,56 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CommonModule,
     MatCardModule,
     MatIconModule,
-    MatSelectModule,
-    MatFormFieldModule,
     MatProgressBarModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent implements OnInit {
-  ProfileObject = ProfileObject;
+export class ProfileComponent implements OnInit, OnDestroy {
+  user: User | null = null;
+  notes: Note[] = [];
+  stats = {
+    total: 0,
+    completed: 0,
+  };
+  isLoading = true;
   
-  selectedIndex: number = 0;
+  private subscription: Subscription | null = null;
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.selectedIndex = 0;
+    this.loadUserProfile();
   }
 
-  reload(index: number): void {
-    this.selectedIndex = index;
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  loadUserProfile(): void {
+    this.isLoading = true;
+    this.subscription = this.userService.getUserProfile().subscribe({
+      next: (data) => {
+        this.user = data.user;
+        this.notes = data.notes;
+        this.stats = data.stats;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Hiba a felhasználói profil betöltésekor:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  getUserInitials(): string {
+    if (!this.user || !this.user.name) return '?';
+    
+    const firstInitial = this.user.name.firstname ? this.user.name.firstname.charAt(0).toUpperCase() : '';
+    const lastInitial = this.user.name.lastname ? this.user.name.lastname.charAt(0).toUpperCase() : '';
+    
+    return firstInitial + (lastInitial ? lastInitial : '');
   }
 }
