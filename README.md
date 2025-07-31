@@ -1,5 +1,6 @@
 # Jegyzetkészítő Webalkalmazás
 (a project a master branchben)
+
 Jegyzetkészítő webalkalmazás authentikációval, jegyzetek létrehozásával és kezelésével
 
 ## Host-link
